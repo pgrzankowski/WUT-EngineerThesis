@@ -1,3 +1,7 @@
 .venv/
 data/
 src/figures
+fig/
+img/
+correlation_with_target.csv
+__pycache__/
