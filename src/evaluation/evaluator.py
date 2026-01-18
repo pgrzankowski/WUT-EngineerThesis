@@ -76,22 +76,24 @@ class ModelEvaluator:
         metrics_label = f"RMSE: {metrics['rmse']:.3f}\nMSE: {metrics['mse']:.3f}\nMAE: {metrics['mae']:.3f}\nR²: {metrics['r2']:.3f}"
         
         sns.scatterplot(x=y_true, y=y_pred, ax=ax, label=metrics_label)
-        ax.set_xlabel('Prawdziwa średnica (km)')
-        ax.set_ylabel('Przewidziana średnica (km)')
+        ax.set_xlabel('Prawdziwa średnica (km)', fontsize=16)
+        ax.set_ylabel('Przewidziana średnica (km)', fontsize=16)
         ax.grid(True)
         ax.set_xscale('log')
         ax.set_yscale('log')
+        ax.set_xlim(1e-3, 1e3)
+        ax.set_ylim(1e-3, 1e3)
         ax.legend(title='Metryki', loc='upper left', frameon=True)
         
         plt.tight_layout()
         
         # Save figure
         if save_path is None:
-            save_path = self.fig_dir / f'{model_name.lower().replace(" ", "_")}_prediction_visual.jpg'
+            save_path = self.fig_dir / 'results' / f'{model_name.lower().replace(" ", "_")}_prediction_visual.pdf'
         else:
             save_path = Path(save_path)
         
-        plt.savefig(save_path, dpi=300, bbox_inches='tight')
+        plt.savefig(save_path, format='pdf', bbox_inches='tight')
         plt.close()
         
         return metrics

@@ -10,7 +10,7 @@ from .base_model import BaseModel
 class MLPRegressorModel(BaseModel):
     """Multi-Layer Perceptron regressor using PyTorch."""
     
-    def __init__(self, use_log_transform=True, hidden_layers=[50, 30, 10], 
+    def __init__(self, use_log_transform=False, hidden_layers=[50, 30, 10], 
                  dropout=0.15, batch_size=128, num_epochs=50, 
                  learning_rate=1e-3, device=None, **kwargs):
         """
@@ -73,8 +73,8 @@ class MLPRegressorModel(BaseModel):
         self.input_size = X.shape[1]
         
         # Apply log transform if specified
-        if self.use_log_transform:
-            y = np.log1p(y)
+        # if self.use_log_transform:
+        #     y = np.log1p(y)
         
         # Create model
         self.model = self._create_model()
