@@ -14,7 +14,7 @@ models:
       l1_ratio: 0.5
     param_grid:
       # Optuna samples floats between min and max
-      alpha: [0.0001, 10.0]      # Wide range: very weak to strong regularization
+      alpha: [0.0001, 1.0]      # Wide range: very weak to strong regularization
       l1_ratio: [0.0, 1.0]       # Full range: pure Ridge (0) to pure Lasso (1)
   
   knn:
@@ -25,7 +25,7 @@ models:
     param_grid:
       n_neighbors: [1, 50]       # Range of neighbors to consider
       weights: ['uniform', 'distance']  # Categorical
-      p: [1, 2]                  # Manhattan (1) or Euclidean (2) distance
+      p: [1]
   
   random_forest:
     class: RandomForestRegressorModel
@@ -57,18 +57,16 @@ models:
     class: XGBRegressorModel
     use_log_transform: false
     default_params:
-      n_estimators: 100
-      learning_rate: 0.1
-      max_depth: 3
-      verbosity: 0               # Suppress XGBoost output
-    param_grid:
-      n_estimators: [50, 300]    # Number of boosting rounds
-      learning_rate: [0.01, 0.3] # Boosting learning rate
-      max_depth: [3, 15]         # Max tree depth
-      min_child_weight: [1, 10]  # Min sum of instance weight in child
-      subsample: [0.6, 1.0]      # Subsample ratio of training instances
-      colsample_bytree: [0.6, 1.0]  # Subsample ratio of columns
-      verbosity: [0]             # Keep verbosity=0 fixed during tuning
+      booster: 'gbtree'
+      device: 'cuda'
+      verbosity: 1              # Suppress XGBoost output
+    param_grid:  # Number of boosting rounds
+      learning_rate: [0.01, 1.0] # Boosting learning rate
+      max_depth: [6, 20]
+      min_child_weight: [1, 10]
+      max_delta_step: [0, 10]
+      subsample: [0.1, 1.0]
+      sampling_method: ['uniform']
   
   lightgbm:
     class: LGBMRegressorModel
@@ -77,15 +75,14 @@ models:
       n_estimators: 100
       learning_rate: 0.1
       max_depth: -1
-      verbose: -1                # Suppress LightGBM output
+      verbosity: -1                # Suppress LightGBM output
+      early_stopping: 5
     param_grid:
-      n_estimators: [50, 300]    # Number of boosting iterations
-      learning_rate: [0.01, 0.3] # Boosting learning rate
-      max_depth: [3, 15]         # Max tree depth (-1 means no limit)
-      num_leaves: [20, 150]      # Max number of leaves in one tree
-      min_child_samples: [5, 50] # Min data in one leaf
-      subsample: [0.6, 1.0]      # Bagging fraction
-      verbose: [-1]              # Keep verbose=-1 fixed during tuning
+      num_leaves: [20, 300]
+      min_data_in_leaf: [10, 100]
+      max_depth: [3, 20]
+      bagging_freq: [1, 10]
+      bagging_fraction: [0.01, 0.99]
   
   svr:
     class: SVRModel
@@ -97,8 +94,6 @@ models:
     param_grid:
       C: [0.1, 100.0]            # Regularization parameter
       epsilon: [0.01, 1.0]       # Epsilon-tube width
-      kernel: ['rbf', 'linear', 'poly']  # Categorical
-      gamma: ['scale', 'auto']   # Kernel coefficient (categorical)
   
   mlp:
     class: MLPRegressorModel

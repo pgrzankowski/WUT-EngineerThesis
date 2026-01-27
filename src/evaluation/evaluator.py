@@ -50,7 +50,7 @@ class ModelEvaluator:
         return metrics
     
     def plot_predictions(self, y_true, y_pred, model_name='model', 
-                        save_path=None, figsize=(10, 10)):
+                        save_path=None, figsize=(8, 8)):
         """
         Create prediction scatter plot.
         
@@ -75,15 +75,15 @@ class ModelEvaluator:
         
         metrics_label = f"RMSE: {metrics['rmse']:.3f}\nMSE: {metrics['mse']:.3f}\nMAE: {metrics['mae']:.3f}\nR²: {metrics['r2']:.3f}"
         
-        sns.scatterplot(x=y_true, y=y_pred, ax=ax, label=metrics_label)
-        ax.set_xlabel('Prawdziwa średnica (km)', fontsize=16)
-        ax.set_ylabel('Przewidziana średnica (km)', fontsize=16)
+        sns.scatterplot(x=y_true, y=y_pred, ax=ax, label=metrics_label, color='#C5A059')
+        ax.set_xlabel('prawdziwa średnica [km]', fontsize=13)
+        ax.set_ylabel('przewidziana średnica [km]', fontsize=13)
         ax.grid(True)
         ax.set_xscale('log')
         ax.set_yscale('log')
         ax.set_xlim(1e-3, 1e3)
         ax.set_ylim(1e-3, 1e3)
-        ax.legend(title='Metryki', loc='upper left', frameon=True)
+        ax.legend(loc='upper left', frameon=True, fontsize=12)
         
         plt.tight_layout()
         
@@ -125,6 +125,8 @@ class ModelEvaluator:
         ax1.axhline(y=0, color='r', linestyle='--')
         ax1.set_xlabel('Przewidziana średnica (km)')
         ax1.set_ylabel('Residua')
+        ax1.set_xscale('log')
+        ax1.set_yscale('log')
         ax1.set_title('Residua vs Przewidziane wartości')
         ax1.grid(True, alpha=0.3)
         

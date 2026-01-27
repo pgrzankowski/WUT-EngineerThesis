@@ -12,7 +12,6 @@ from .sklearn_models import (
     SVRModel,
 )
 from .pytorch_models import MLPRegressorModel
-from .ensemble_models import VotingRegressorModel, StackingRegressorModel
 from .classical_model import ClassicalDiameterModel
 
 __all__ = [
@@ -26,8 +25,6 @@ __all__ = [
     'LGBMRegressorModel',
     'SVRModel',
     'MLPRegressorModel',
-    'VotingRegressorModel',
-    'StackingRegressorModel',
     'ClassicalDiameterModel',
 ]
 

@@ -73,8 +73,8 @@ class MLPRegressorModel(BaseModel):
         self.input_size = X.shape[1]
         
         # Apply log transform if specified
-        # if self.use_log_transform:
-        #     y = np.log1p(y)
+        if self.use_log_transform:
+            y = np.log1p(y)
         
         # Create model
         self.model = self._create_model()
@@ -255,7 +255,7 @@ class MLPNetwork(nn.Module):
         for i, hidden_size in enumerate(hidden_layers):
             layers.append(nn.Linear(prev_size, hidden_size))
             layers.append(nn.BatchNorm1d(hidden_size))
-            layers.append(nn.LeakyReLU())
+            layers.append(nn.ReLU())
             layers.append(nn.Dropout(dropout))
             prev_size = hidden_size
         

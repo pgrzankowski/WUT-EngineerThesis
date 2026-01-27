@@ -85,8 +85,8 @@ class HyperparameterTuner:
         verbose = verbose if verbose is not None else tuning_config.get('verbose', 1)
         
         # Ensure n_jobs is not -1 to prevent system crashes
-        if n_jobs == -1:
-            n_jobs = 2
+        # if n_jobs == -1:
+        #     n_jobs = 2
         
         # Get parameter grid
         if param_grid is None:

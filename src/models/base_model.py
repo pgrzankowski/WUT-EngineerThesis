@@ -15,8 +15,8 @@ class BaseModel(ABC):
             use_log_transform: Whether to apply log1p transform to target
             **kwargs: Additional model-specific parameters
         """
-        self.use_log_transform = False
-        self.model_kwargs = kwargs  # Store kwargs for model creation
+        self.use_log_transform = use_log_transform
+        self.model_kwargs = kwargs
         self.is_fitted = False
         self.model = None
     
@@ -39,11 +39,6 @@ class BaseModel(ABC):
         if hasattr(y, 'values'):
             y = y.values
         
-        # Apply log transform if specified
-        # if self.use_log_transform:
-        #     y = np.log1p(y)
-        
-        # Create and fit model with stored kwargs
         self.model = self._create_model(**self.model_kwargs)
         self.model.fit(X, y)
         self.is_fitted = True
@@ -68,11 +63,7 @@ class BaseModel(ABC):
         
         # Get predictions
         preds = self.model.predict(X)
-        
-        # Inverse log transform if needed
-        # if self.use_log_transform:
-        #     preds = np.expm1(preds)
-        
+
         return preds
     
     def get_params(self, deep=True):
